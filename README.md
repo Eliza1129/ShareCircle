@@ -6,7 +6,7 @@
 
 ## Features
 
-```plaintext
+
 - **User Authentication**: Secure registration and login with JWT.
 - **Avatar Upload**: Personalized profiles with user-uploaded avatars.
 - **Item Management**:
@@ -16,13 +16,13 @@
 - **Search Functionality**: Search items by keywords.
 - **Chatroom**: Real-time communication between users using Socket.IO.
 - **Geolocation**: Items categorized based on user proximity.
-```
+
 
 ---
 
 ## Tech Stack
 
-```plaintext
+
 - **Frontend**: React, Axios, React Router
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB with Mongoose ORM
@@ -30,7 +30,7 @@
 - **File Upload**: Multer for handling avatar and item image uploads
 - **Real-time Communication**: Socket.IO for chat functionality
 - **Deployment**: Node.js and MongoDB on a cloud server
-```
+
 
 ---
 
@@ -61,12 +61,11 @@ node server.js
 cd ../sharecircle-frontend
 npm start
 ```
-
 ---
 
 ## Usage
 
-```plaintext
+
 1. **Register and Login**
    - Users can sign up and log in securely using their email and password.
    - Users can upload a personalized avatar during profile setup.
@@ -86,7 +85,7 @@ npm start
 5. **Explore Nearby Towns**
    - View and browse items available in nearby communities.
    - Discover local sharing opportunities in towns close to your location.
-```
+
 
 ---
 
@@ -94,41 +93,39 @@ npm start
 
 ### User Endpoints
 
-```plaintext
+
 POST /users/register - Register a new user
 POST /users/login - Login and get a JWT token
 GET /users/profile - Fetch the profile of the logged-in user
 POST /users/:id/upload-avatar - Upload an avatar for the user
-```
+
 
 ### Item Endpoints
 
-```plaintext
+
 POST /items - Create a new item
 GET /items/recent - Fetch the most recent items
 GET /items/:id - Fetch details of a specific item
 GET /items/search?query= - Search items by name or description
-```
+
 
 ### Chat Endpoints
 
-```plaintext
+
 Connect to chat rooms via WebSocket using the `/chat` namespace
-```
+
 
 ---
 
 ## Contributions
 
-```plaintext
+
 Contributions are welcome! Please fork the repository and submit a pull request.
-```
 
 ---
 
 ## License
 
-```plaintext
+
 This project is licensed under the MIT License.
-```
-```
+
