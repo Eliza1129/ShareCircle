@@ -42,13 +42,28 @@
   cd sharecircle-backend
   npm install
 
----
+
+
 
 ## Usage
 
-1.Register and Login: Users can register, log in, and upload avatars for their profiles.
-2. Post Items: Add details and upload images for items to share.
-3. Browse Items: View recent items or search by keywords.
-4. Chat: Engage in real-time conversations with other users.
-5. Explore Nearby Towns: Discover items in your vicinity.
- 
+1. **Register and Login**
+   - Users can sign up and log in securely using their email and password.
+   - Users can upload a personalized avatar during profile setup.
+
+2. **Post Items**
+   - Create a new post by providing details such as item name, description, category, and location.
+   - Upload up to 5 images for each item to showcase it effectively.
+
+3. **Browse Items**
+   - Explore the most recently shared items on the landing page.
+   - Use the search bar to find specific items by keywords.
+
+4. **Chat**
+   - Engage in real-time conversations with other users in a dedicated chat room.
+   - Connect with item owners for more details.
+
+5. **Explore Nearby Towns**
+   - View and browse items available in nearby communities.
+   - Discover local sharing opportunities in towns close to your location.
+
