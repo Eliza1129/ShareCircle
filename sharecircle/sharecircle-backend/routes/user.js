@@ -96,7 +96,7 @@ router.post('/:id/upload-avatar', upload.uploadAvatar.single('avatar'), async (r
     }
 
     // Update user's avatar
-    user.avatar = `/upload/avatars/${req.file.filename}`;
+    user.avatar = `/uploads/avatars/${req.file.filename}`;
     await user.save();
 
     res.status(200).json({ message: 'Avatar updated successfully', avatar: user.avatar });

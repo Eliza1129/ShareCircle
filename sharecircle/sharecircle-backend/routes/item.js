@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Item = require('../models/Item'); // Import Item model
+const Item = require('../models/Item');
 const auth = require('../middleware/auth');
 const multer = require('multer');
 const path = require('path');
@@ -8,7 +8,7 @@ const path = require('path');
 // Configure storage for images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '../uploads/items')); // Store in the 'upload/items' directory
+    cb(null, path.join(__dirname, '../uploads/items')); // Store in the 'uploads/items' directory
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`); // Use a unique file name
@@ -99,7 +99,11 @@ router.get('/search', async (req, res) => {
   try {
     // Find items whose name matches the query (case-insensitive)
     const items = await Item.find({
-      name: { $regex: query, $options: 'i' }, // Regular expression for partial, case-insensitive match
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { description: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } },
+      ],
     });
 
     res.status(200).json(items); // Respond with the matched items
@@ -126,7 +130,7 @@ router.get('/', async (req, res) => {
       location: {
         $geoWithin: { $centerSphere: [[longitude, latitude], radius / 6378.1] },
       },
-    });
+    }).sort({ createdAt: -1 });
 
     res.status(200).json(items);
   } catch (err) {
@@ -135,10 +139,17 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get recent items
+// Get recent items with pagination
 router.get('/recent', async (req, res) => {
+  const limit = parseInt(req.query.limit) || 10; // Default limit to 10
+  const skip = parseInt(req.query.skip) || 0; // Default skip to 0
+
   try {
-    const recentItems = await Item.find().sort({ createdAt: -1 }).limit(10); // Fetch the most recent 10 items
+    const recentItems = await Item.find()
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .skip(skip)
+      .limit(limit);
+
     res.status(200).json(recentItems);
   } catch (error) {
     console.error('Error fetching recent items:', error);
@@ -146,6 +157,7 @@ router.get('/recent', async (req, res) => {
   }
 });
 
+// Seed items
 router.post('/seed', async (req, res) => {
   const seedItems = [
     {
@@ -179,9 +191,26 @@ router.post('/seed', async (req, res) => {
   }
 });
 
+// Get items by user ID
+router.get('/user/:userId', auth, async (req, res) => {
+  const { userId } = req.params;
+
+  console.log('Fetching items for user:', userId);
+
+  try {
+    const items = await Item.find({ owner: userId }).sort({ createdAt: -1 });
+    console.log('Fetched items:', items);
+    res.status(200).json(items);
+  } catch (error) {
+    console.error('Error fetching items by user:', error);
+    res.status(500).json({ error: 'Failed to fetch items by user' });
+  }
+});
+
 
 
 module.exports = router;
+
 
 
 

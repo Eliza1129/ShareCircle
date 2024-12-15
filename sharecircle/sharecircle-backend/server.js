@@ -18,7 +18,7 @@ const server = http.createServer(app); // Create HTTP server
 const io = new Server(server, {
   cors: {
     origin: 'http://localhost:3000', // Frontend URL
-    methods: ['GET', 'POST','PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'], 
   },
 });
@@ -28,7 +28,11 @@ const PORT = process.env.PORT || 5001;
 // Middleware
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // Allow requests from the frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
 // MongoDB Connection
 mongoose
@@ -39,12 +43,15 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB Connection Error:', err));
 
+// Serve Static Files
+app.use('/uploads', (req, res, next) => {
+  console.log(`Static file request: ${req.method} ${req.originalUrl}`);
+  next();
+}, express.static(path.join(__dirname, 'uploads')));
+
 // Mount Routes
-// 配置静态文件路径
-app.use('/uploads', cors(), express.static(path.join(__dirname, 'uploads')));
 app.use('/users', userRoutes); // Routes for user-related actions (e.g., register, login)
 app.use('/items', itemRoutes); // Routes for item-related actions (protected by auth)
-
 
 // Real-Time Chat with Socket.IO
 let users = {}; // Keep track of connected users
@@ -85,5 +92,3 @@ app._router.stack.forEach((middleware) => {
 
 // Start Server
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
-
